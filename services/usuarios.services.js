@@ -27,3 +27,42 @@ const usuarios = [
         console.log(error)
     }
  }
+
+ const obtenerTodosLosUsuarios = () => {
+    try {
+        return usuarios
+    } catch (error) {
+        console.log(error)
+    }
+ }
+
+ const obtenerUnUsuario = (idUsuario) => {
+    try {
+        const usuario = usuarios.find((user) => user.id === idUsuario)
+        return usuario
+    } catch (error) {
+        console.log(error)
+    }
+ }
+
+ const bajaUsuarioFisica = (idUsuario) => {
+
+        const posicionDelUsuario = usuarios.findIndex((usuario) => usuario.id === idUsuario)   
+        usuarios.splice(posicionDelUsuario, 1)
+        return 200
+ }
+
+ const bajaUsuarioLogica = (idUsuario) => {
+    const posicionDelUsuario = usuarios.findIndex((usuario) => usuario.id === idUsuario)
+    usuarios[posicionDelUsuario].baja = !usuarios[posicionDelUsuario].baja
+    const mensaje = usuarios[posicionDelUsuario].baja ? `Usuario bloqueado` : `Usuario activo`
+    return mensaje
+ }
+
+ module.exports = {
+    nuevoUsuario,
+    obtenerTodosLosUsuarios,
+    obtenerUnUsuario,
+    bajaUsuarioFisica,
+    bajaUsuarioLogica,
+ }
