@@ -1,15 +1,15 @@
 const servicioProductos = require(`../services/productos.services`)
 
 
-const obtenerUnProductoPorIdOTodos = (req,res) => {
+const obtenerUnProductoPorIdOTodos = async(req,res) => {
     try {
       const id = Number(req.query.id)
     
     if(id){
-        const producto = servicioProductos.obtenerUnProducto(id)
+        const producto = await servicioProductos.obtenerUnProducto(id)
         res.status(200).json(producto)
     } else {
-        const productos = servicioProductos.obtenerTodosLosProductos()
+        const productos = await servicioProductos.obtenerTodosLosProductos()
         res.status(200).json(productos)
     }  
     } catch (error) {
@@ -17,10 +17,12 @@ const obtenerUnProductoPorIdOTodos = (req,res) => {
     }   
     } 
 
-    const crearProducto = (req,res) =>{
+    const crearProducto = async (req, res) =>{
         try {
-          const nuevoUsuario = servicioProductos.nuevoProducto(req.body)
-          res.status(201).json(nuevoUsuario)
+          const nuevoProducto = await servicioProductos.nuevoProducto(req.body)
+          await nuevoProducto.save()
+          res.status(201).json(nuevoProducto)
+
         } catch (error) {
           res.status(500).json(error) 
         }  

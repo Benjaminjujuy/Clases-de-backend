@@ -1,4 +1,4 @@
-let productos = [
+/*let productos = [
     {
         id:1,
         nombre: `celular`,
@@ -9,26 +9,29 @@ let productos = [
         nombre: `tablet`,
         precio: 20000
     }
-  ]
+  ]*/
+const ProductModel = require(`../models/producto.schema`) 
 
-
-  const obtenerTodosLosProductos = () => {
-    return productos
+  const obtenerTodosLosProductos = async() => {
+    const obtenerProductos = await ProductModel.find()
+    return obtenerProductos
   }
 
-  const obtenerUnProducto = (id) => {
-    const producto = productos.find((prod) => prod.id ===id)
+  const obtenerUnProducto = async(id) => {
+    const producto = await ProductModel.findOne({_id: id})
     return producto
   }
 
   const nuevoProducto = (body) => {
     try {
-        const nuevoProducto = {
+      const newProduct = new ProductModel(body)
+      return newProduct
+        /*const nuevoProducto = {
             id: productos[productos.length-1].id + 1,
             ...body
         }
         productos.push(nuevoProducto)
-        return nuevoProducto
+        return nuevoProducto*/
     } catch (error) {
         console.log(error)
     }
