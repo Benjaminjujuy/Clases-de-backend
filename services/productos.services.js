@@ -18,7 +18,7 @@ const ProductModel = require(`../models/producto.schema`)
   }
 
   const obtenerUnProducto = async(id) => {
-    const producto = await ProductModel.findOne({_id: id})
+    const producto = await ProductModel.findOne({_id: id}) 
     return producto
   }
 
@@ -37,25 +37,19 @@ const ProductModel = require(`../models/producto.schema`)
     }
   }
 
-  const editarProducto = (idProducto) => {
+  const editarProducto = async(idProducto, body) => {
     try {
-        const posicionProductoEnElArray = productos.findIndex((producto) => producto.id === idProducto)
-          const productoEditado = {
-            id, 
-            ...req.body
-          }
-          productos[posicionProductoEnElArray] = productoEditado
-          return productoEditado
+      const productoEditado = await ProductModel.findByIdAndUpdate({_id: idProducto}, body, {new: true })
+      return productoEditado
     } catch (error) {
         console.log(error)
     }
   }
 
-const eliminarProducto = (idProducto) => {
+const eliminarProducto = async(idProducto) => {
     try {
-        const posicionProductoEnElArray = productos.findIndex((producto) => producto.id !==idProducto)
-        productos.splice(posicionProductoEnElArray, 1)
-        return 200
+      await ProductModel.findByIdAndDelete({_id: idProducto})
+      return 200
     } catch (error) {
         console.log(error)
     }
