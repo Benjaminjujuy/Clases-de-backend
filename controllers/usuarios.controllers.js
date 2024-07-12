@@ -1,36 +1,36 @@
 const serviceUsuario = require(`../services/usuarios.services`)
 
-const registrarUsuario = (req, res) => {
+const registrarUsuario = async(req, res) => {
 try {
-const res = serviceUsuario.nuevoUsuario(req.body)
-if(res === 201){
+const result = await serviceUsuario.nuevoUsuario(req.body)
+if(result === 201){
     res.status(201).json({msg: "usuario registrado correctamente"})
 }
 } catch (error) {
     console.log(error)
 }}
 
-const obtenerTodosLosUsuarios = (req, res) => {
+const obtenerTodosLosUsuarios = async(req, res) => {
     try {
-        const usuarios = serviceUsuario.obtenerTodosLosUsuarios()
+        const usuarios = await serviceUsuario.obtenerTodosLosUsuarios()
         res.status(200).json(usuarios)
     } catch (error) {
         console.log(error)
     }
 }
 
-const obtenerUnUsuario = (req, res) => {
+const obtenerUnUsuario = async(req, res) => {
     try {
-        const usuario = serviceUsuario.obtenerUnUsuario(req.params.idUsuario)
+        const usuario = await serviceUsuario.obtenerUnUsuario(req.params.idUsuario)
         res.status(200).json({msg:`Usuario encontrado`, usuario})
     } catch (error) {
         console.log(error)
     }
 }
 
-const bajaFisicaUsuario = (req, res) => {
+const bajaFisicaUsuario = async(req, res) => {
     try {
-        const res = serviceUsuario.bajaUsuarioFisica(req.params.idUsuario)
+        const res = await serviceUsuario.bajaUsuarioFisica(req.params.idUsuario)
         if(res === 200){
         res.status(200).json({msg:`Usuario borrado con exito`})
         }
@@ -39,10 +39,10 @@ const bajaFisicaUsuario = (req, res) => {
     }
 }
 
-const bajaLogicaUsuario = (req, res) => {
+const bajaLogicaUsuario = async(req, res) => {
     try {
-        const res = serviceUsuario.bajaUsuarioLogica(req.params.idUsuario)
-        res.status(200).json({msg: res})
+        const usuario = await serviceUsuario.bajaUsuarioLogica(req.params.idUsuario)
+        res.status(200).json({usuario})
     } catch (error) {
         console.log(error)
     }

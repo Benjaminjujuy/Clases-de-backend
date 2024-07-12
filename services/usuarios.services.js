@@ -1,62 +1,53 @@
-const usuarios = [
+/*const usuarios = [
     {
      id: 1,
      nombreDelUsuario: `benja2024`,
      emailDelUsuario: `benjajuarez@gmail.com`,
      contrasenia: `123456789`
     }
- ]
+ ]*/
 
+const usuarioModel = require("../models/usuario.schema")
 
- const nuevoUsuario = (body) => {
+ const nuevoUsuario = async(body) => {
     try {
-        const emailExiste = usuarios.find((usuario) => usuario.emailDelUsuario === body.emailDelUsuario)
-        const usuarioExiste = usuarios.find((usuario) => usuario.nombreDelUsuario === body.nombreDelUsuario)
-    
-        if(emailExiste){
-            return res.status(400).json({msg: "Email no disponible"})
-           } else if(usuarioExiste){
-        return res.status(400).json({msg: "Usuario no disponible"})
-           }
-    
-    const id = crypto.randomUUID()
-    usuarios.push({id, baja: false, ...body})
-
-    return 201
+        const usuario = new usuarioModel(body)
+        await usuario.save()
+        return 201
     } catch (error) {
         console.log(error)
     }
  }
 
- const obtenerTodosLosUsuarios = () => {
+ const obtenerTodosLosUsuarios = async() => {
     try {
+        const usuarios = await usuarioModel.find()
         return usuarios
     } catch (error) {
         console.log(error)
     }
  }
 
- const obtenerUnUsuario = (idUsuario) => {
+ const obtenerUnUsuario = async(idUsuario) => {
     try {
-        const usuario = usuarios.find((user) => user.id === idUsuario)
+        const usuario = await usuarioModel.findOne({_id: idUsuario})
         return usuario
     } catch (error) {
         console.log(error)
     }
  }
 
- const bajaUsuarioFisica = (idUsuario) => {
-
-        const posicionDelUsuario = usuarios.findIndex((usuario) => usuario.id === idUsuario)   
-        usuarios.splice(posicionDelUsuario, 1)
+ const bajaUsuarioFisica = async(idUsuario) => {
+        await usuarioModel.findOneAndDelete({_id: idUsuario})
         return 200
  }
 
- const bajaUsuarioLogica = (idUsuario) => {
-    const posicionDelUsuario = usuarios.findIndex((usuario) => usuario.id === idUsuario)
-    usuarios[posicionDelUsuario].baja = !usuarios[posicionDelUsuario].baja
-    const mensaje = usuarios[posicionDelUsuario].baja ? `Usuario bloqueado` : `Usuario activo`
-    return mensaje
+ const bajaUsuarioLogica = async(idUsuario) => {
+    const usuario = await usuarioModel.findOne({_id: idUsuario})
+    usuario.bloqueado = !usuario.bloqueado
+
+    const actualizarUsuario = await usuarioModel.findOneAndUpdate({_id: idUsuario}, usuario, {new:true})
+    return actualizarUsuario
  }
 
  module.exports = {
