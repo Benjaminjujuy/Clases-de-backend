@@ -10,6 +10,21 @@ if(result === 201){
     console.log(error)
 }}
 
+const iniciarSesionUsuario = async(req,res) => {
+try {
+    const result = await serviceUsuario.inicioSesion(req.body)
+
+    if(result === 400){
+        res.status(400).json({msg: `usuario y/o contrasenia incorrecto`})
+    }else{
+        res.status(200).json({msg: `usuario inicio sesion`})
+    }
+
+} catch (error) {
+    console.log (error)
+}
+}
+
 const obtenerTodosLosUsuarios = async(req, res) => {
     try {
         const usuarios = await serviceUsuario.obtenerTodosLosUsuarios()
@@ -51,6 +66,7 @@ const bajaLogicaUsuario = async(req, res) => {
 
 module.exports = {
     registrarUsuario,
+    iniciarSesionUsuario,
     obtenerTodosLosUsuarios,
     obtenerUnUsuario,
     bajaFisicaUsuario,

@@ -8,12 +8,45 @@
  ]*/
 
 const usuarioModel = require("../models/usuario.schema")
+const bcrypt = require(`bcrypt`)
 
  const nuevoUsuario = async(body) => {
     try {
+        const usuarioExiste = await usuarioModel.findOne({nombreUsuario: body.nombreUsuario})
+
+        if(usuarioExiste){
+            return 400
+        }
+
+        let salt = bcrypt.genSaltSync();
+        body.contrasenia = bcrypt.hashSync(body.contrasenia, salt);
+
+
+
         const usuario = new usuarioModel(body)
         await usuario.save()
         return 201
+    } catch (error) {
+        console.log(error)
+    }
+ }
+
+ const inicioSesion = async(body) => {
+    try {
+        const usuarioExiste = await usuarioModel.findOne({nombreUsuario: body.nombreUsuario})
+
+        if(!usuarioExiste){
+            return 400
+        }
+
+        const verificacionContrasenia = bcrypt.compareSync(body.contrasenia, usuarioExiste.contrasenia)
+
+        if(verificacionContrasenia){
+            return 200
+        }else{
+            return 400
+        }
+
     } catch (error) {
         console.log(error)
     }
@@ -52,6 +85,7 @@ const usuarioModel = require("../models/usuario.schema")
 
  module.exports = {
     nuevoUsuario,
+    inicioSesion,
     obtenerTodosLosUsuarios,
     obtenerUnUsuario,
     bajaUsuarioFisica,
