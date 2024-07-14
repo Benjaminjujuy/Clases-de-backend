@@ -1,20 +1,16 @@
-/*let productos = [
-    {
-        id:1,
-        nombre: `celular`,
-        precio: 10000
-    },
-    {
-        id:2,
-        nombre: `tablet`,
-        precio: 20000
-    }
-  ]*/
 const ProductModel = require(`../models/producto.schema`) 
 
-  const obtenerTodosLosProductos = async() => {
-    const obtenerProductos = await ProductModel.find()
-    return obtenerProductos
+  const obtenerTodosLosProductos = async(limit, to) => {
+    const[ productos, cantidadTotal ] = await Promise.all([
+      ProductModel.find({activo: true}).skip(to * limit).limit(limit),
+      ProductModel.countDocuments({activo: true})
+    ])
+
+    const paginacion = {
+      productos,
+      cantidadTotal
+    }
+    return paginacion
   }
 
   const obtenerUnProducto = async(id) => {

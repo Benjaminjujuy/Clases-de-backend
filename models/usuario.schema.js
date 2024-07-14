@@ -17,6 +17,7 @@ const usuarioSchema = new Schema({
     rol: {
         type: String,
         default: `usuario`, 
+        enum:[`usuario`, `admin`]
     },
 
     bloqueado: {
@@ -24,6 +25,11 @@ const usuarioSchema = new Schema({
         default: false,
     }
 })
+
+usuarioSchema.methods.toJSON = function(){
+    const { contrasenia, __v, ...usuario} = this.toObject()
+    return usuario
+}
 
 
 const usuarioModel = model(`user`, usuarioSchema)

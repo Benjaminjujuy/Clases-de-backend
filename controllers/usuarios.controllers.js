@@ -1,10 +1,18 @@
 const serviceUsuario = require(`../services/usuarios.services`)
+const { validationResult } = require(`express-validator`)
 
 const registrarUsuario = async(req, res) => {
 try {
+const { errors } = validationResult(req)
+if(errors.length) {
+return res.status(400).json({ msg: errors[0].msg })
+}
+
 const result = await serviceUsuario.nuevoUsuario(req.body)
 if(result === 201){
     res.status(201).json({msg: "usuario registrado correctamente"})
+}else if(result === 409){
+    res.status(409).json({msg: `Error al crear: Rol incorrecto`})
 }
 } catch (error) {
     console.log(error)
@@ -36,6 +44,11 @@ const obtenerTodosLosUsuarios = async(req, res) => {
 
 const obtenerUnUsuario = async(req, res) => {
     try {
+        const { errors } = validationResult(req)
+       if(errors.length) {
+       return res.status(400).json({ msg: errors[0].msg })
+       }
+
         const usuario = await serviceUsuario.obtenerUnUsuario(req.params.idUsuario)
         res.status(200).json({msg:`Usuario encontrado`, usuario})
     } catch (error) {
