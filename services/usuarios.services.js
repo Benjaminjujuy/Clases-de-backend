@@ -1,6 +1,6 @@
 const usuarioModel = require("../models/usuario.schema")
 const bcrypt = require(`bcrypt`)
-const jwt = require(`jsonwebtoken`)
+
 
  const nuevoUsuario = async(body) => {
     try {
@@ -32,7 +32,7 @@ const jwt = require(`jsonwebtoken`)
         const usuarioExiste = await usuarioModel.findOne({nombreUsuario: body.nombreUsuario})
 
         if(!usuarioExiste){
-            return 400
+            return { code: 400 }
         }
 
         const verificacionContrasenia = bcrypt.compareSync(body.contrasenia, usuarioExiste.contrasenia)
@@ -45,7 +45,7 @@ const jwt = require(`jsonwebtoken`)
                 bloqueado: usuarioExiste.bloqueado
             }
 
-            const token = jwt.sign(payload, process.env.JWT_SECRET)
+            const token = jwt.sign(payload, process.env.JWT_SECRET,)
 
             return {
                 code: 200,
@@ -53,7 +53,7 @@ const jwt = require(`jsonwebtoken`)
             }
 
         }else{
-            return 400
+            return { code: 400 } 
         }
 
     } catch (error) {

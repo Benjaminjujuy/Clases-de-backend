@@ -1,5 +1,7 @@
+const { token } = require("morgan")
 const serviceUsuario = require(`../services/usuarios.services`)
 const { validationResult } = require(`express-validator`)
+const jwt = require(`jsonwebtoken`)
 
 
 
@@ -25,10 +27,10 @@ const iniciarSesionUsuario = async(req,res) => {
 try {
     const result = await serviceUsuario.inicioSesion(req.body)
 
-    if(result === 400){
+    if(result.code === 400){
         res.status(400).json({msg: `usuario y/o contrasenia incorrecto`})
     }else{
-        res.status(200).json({msg: `usuario inicio sesion`})
+        res.status(200).json({msg: `usuario inicio sesion`, token: result.token})
     }
 
 } catch (error) {
