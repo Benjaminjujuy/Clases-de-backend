@@ -16,13 +16,13 @@ router.post(`/login`,[
     check(`contrasenia`, `campo CONTRASENIA esta vacio`).not().isEmpty(),
 ], iniciarSesionUsuario)
 
-router.get(`/`,obtenerTodosLosUsuarios)
+router.get(`/`, auth(`admin`),obtenerTodosLosUsuarios) 
 
 router.get(`/:idUsuario`,[
     /*check(`_id`, `Formato ID incorrecto`).isMongoId()*/ 
-], obtenerUnUsuario)
-router.delete(`/:idUsuario`, bajaFisicaUsuario)
+], auth(`admin`),obtenerUnUsuario)
+router.delete(`/:idUsuario`,auth(`admin`), bajaFisicaUsuario)
 
-router.put(`/:idUsuario`, bajaLogicaUsuario)
+router.put(`/:idUsuario`,auth(`admin`), bajaLogicaUsuario)
 
 module.exports = router
