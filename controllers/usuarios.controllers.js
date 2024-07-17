@@ -1,6 +1,9 @@
 const serviceUsuario = require(`../services/usuarios.services`)
 const { validationResult } = require(`express-validator`)
 
+
+
+
 const registrarUsuario = async(req, res) => {
 try {
 const { errors } = validationResult(req)

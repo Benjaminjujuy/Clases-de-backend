@@ -1,5 +1,6 @@
 const usuarioModel = require("../models/usuario.schema")
 const bcrypt = require(`bcrypt`)
+const jwt = require(`jsonwebtoken`)
 
  const nuevoUsuario = async(body) => {
     try {
@@ -37,7 +38,20 @@ const bcrypt = require(`bcrypt`)
         const verificacionContrasenia = bcrypt.compareSync(body.contrasenia, usuarioExiste.contrasenia)
 
         if(verificacionContrasenia){
-            return 200
+
+            const payload = {
+                _id: usuarioExiste._id,
+                rol: usuarioExiste.rol,
+                bloqueado: usuarioExiste.bloqueado
+            }
+
+            const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+            return {
+                code: 200,
+                token
+            }
+
         }else{
             return 400
         }
