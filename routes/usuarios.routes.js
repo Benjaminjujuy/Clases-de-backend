@@ -16,6 +16,9 @@ router.post(`/login`,[
     check(`contrasenia`, `campo CONTRASENIA esta vacio`).not().isEmpty(),
 ], iniciarSesionUsuario)
 
+router.post(``)
+
+
 router.get(`/`, auth(`admin`),obtenerTodosLosUsuarios) 
 
 router.get(`/:idUsuario`,[

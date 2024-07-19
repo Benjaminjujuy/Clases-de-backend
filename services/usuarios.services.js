@@ -1,5 +1,7 @@
+const { registroUsuario } = require("../helpers/mensajes")
 const usuarioModel = require("../models/usuario.schema")
 const bcrypt = require(`bcrypt`)
+const jwt = require(`jsonwebtoken`)
 
 
  const nuevoUsuario = async(body) => {
@@ -18,7 +20,7 @@ const bcrypt = require(`bcrypt`)
         body.contrasenia = bcrypt.hashSync(body.contrasenia, salt);
 
 
-
+        registroUsuario()
         const usuario = new usuarioModel(body)
         await usuario.save()
         return 201
@@ -45,7 +47,7 @@ const bcrypt = require(`bcrypt`)
                 bloqueado: usuarioExiste.bloqueado
             }
 
-            const token = jwt.sign(payload, process.env.JWT_SECRET,)
+            const token = jwt.sign(payload, process.env.JWT_SECRET)
 
             return {
                 code: 200,

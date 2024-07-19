@@ -1,7 +1,8 @@
+
 const { token } = require("morgan")
 const serviceUsuario = require(`../services/usuarios.services`)
 const { validationResult } = require(`express-validator`)
-const jwt = require(`jsonwebtoken`)
+
 
 
 
