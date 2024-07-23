@@ -1,4 +1,4 @@
-const transporter = require(`../helpers/nodemailer`)
+/*const transporter = require(`../helpers/nodemailer`)
 
 const registroUsuario = async(nombre, apellido, emailUsuario) => {
     // send mail with defined transport object
@@ -18,4 +18,4 @@ const registroUsuario = async(nombre, apellido, emailUsuario) => {
 
   module.exports = {
     registroUsuario
-  }
+  }*/

@@ -63,9 +63,18 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
         }
       }
 
+      const agregarImagenProductoPorId = async(req, res) => {
+        try {
+          const imagenCloudinary = await serviciosProductos.agregarImagen(req.file)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
     module.exports = {
         obtenerUnProductoPorIdOTodos,
         crearProducto,
         editarProductoPorId,
-        eliminarProductoPorId
+        eliminarProductoPorId,
+        agregarImagenProductoPorId
     }

@@ -1,4 +1,5 @@
 const ProductModel = require(`../models/producto.schema`) 
+const cloudinary = require(`../helpers/cloudinary`)
 
   const obtenerTodosLosProductos = async(limit, to) => {
     const[ productos, cantidadTotal ] = await Promise.all([
@@ -51,12 +52,18 @@ const eliminarProducto = async(idProducto) => {
     }
 }
 
+const agregarImagen = async(file) => {
+  const resultado = await cloudinary.uploader.upload(file.path)
+  consoloe.log(resultado)
+}
+
 
   module.exports = {
     obtenerTodosLosProductos,
     obtenerUnProducto,
     nuevoProducto,
     editarProducto,
-    eliminarProducto
+    eliminarProducto,
+    agregarImagen
   }
 
