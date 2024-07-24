@@ -19,8 +19,15 @@ const cloudinary = require(`../helpers/cloudinary`)
     return producto
   }
 
-  const buscarProducto = (termino) => {
-    
+  const buscarProducto = async(termino) => {
+    const reglaBusqueda = new RegExp(termino, `i`)
+    const productos = await ProductModel.find({
+      $or: [
+        {nombre: reglaBusqueda},
+        {descripcion: reglaBusqueda}
+      ]
+    })
+    return productos
   }
 
 
@@ -74,6 +81,7 @@ const agregarImagen = async(idProducto, file) => {
     nuevoProducto,
     editarProducto,
     eliminarProducto,
-    agregarImagen
+    agregarImagen,
+    buscarProducto
   }
 

@@ -77,7 +77,8 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
 
       const buscarProductoPorTermino = async (req, res) =>{
         try {
-          const resultado = await servicioProductos.buscarProducto(req.query.termino)
+          const resultado = await servicioProductos.buscarProducto(req.query.termino) 
+          res.json(resultado)
         } catch (error) {
           console.log(error)
         }
@@ -88,5 +89,6 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
         crearProducto,
         editarProductoPorId,
         eliminarProductoPorId,
-        agregarImagenProductoPorId
+        agregarImagenProductoPorId,
+        buscarProductoPorTermino
     }
