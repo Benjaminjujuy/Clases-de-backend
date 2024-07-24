@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator")
 const servicioProductos = require(`../services/productos.services`)
+const ProductModel = require("../models/producto.schema")
 
 
 const obtenerUnProductoPorIdOTodos = async(req,res) => {
@@ -65,7 +66,18 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
 
       const agregarImagenProductoPorId = async(req, res) => {
         try {
-          const imagenCloudinary = await serviciosProductos.agregarImagen(req.file)
+          const resultado = await servicioProductos.agregarImagen(req.params.idProducto, req.file)
+          if(resultado ===200){
+            return res.status(200).json({msg:`Se agrego la imagen correctamente`})
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      const buscarProductoPorTermino = async (req, res) =>{
+        try {
+          const resultado = await servicioProductos.buscarProducto(req.query.termino)
         } catch (error) {
           console.log(error)
         }

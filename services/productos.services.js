@@ -19,6 +19,11 @@ const cloudinary = require(`../helpers/cloudinary`)
     return producto
   }
 
+  const buscarProducto = (termino) => {
+    
+  }
+
+
   const nuevoProducto = (body) => {
     try {
       const newProduct = new ProductModel(body)
@@ -52,9 +57,14 @@ const eliminarProducto = async(idProducto) => {
     }
 }
 
-const agregarImagen = async(file) => {
+const agregarImagen = async(idProducto, file) => {
+  const producto = await ProductModel.findOne({_id: idProducto})
   const resultado = await cloudinary.uploader.upload(file.path)
-  consoloe.log(resultado)
+
+  producto.imagen = resultado.secure_url
+  await producto.save()
+
+  return 200
 }
 
 
