@@ -24,9 +24,11 @@ const usuarioSchema = new Schema({
         type: Boolean,
         default: false,
     },
+
     idCarrito: {
         type: String
     },
+
     idFavoritos: {
         type: String
     }
