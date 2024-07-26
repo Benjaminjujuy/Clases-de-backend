@@ -84,11 +84,21 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
         }
       }
 
+      const agregarProductoAlCarrito = async(req, res) => {
+        const result = await serviciosProductos.agregarProducto(req.idUsuario, req.params.idProducto)
+        try {
+          res.send(`ok`)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
     module.exports = {
         obtenerUnProductoPorIdOTodos,
         crearProducto,
         editarProductoPorId,
         eliminarProductoPorId,
         agregarImagenProductoPorId,
-        buscarProductoPorTermino
+        buscarProductoPorTermino,
+        agregarProductoAlCarrito,
     }

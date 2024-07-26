@@ -1,5 +1,6 @@
 const ProductModel = require(`../models/producto.schema`) 
 const cloudinary = require(`../helpers/cloudinary`)
+const usuarioModel = require("../models/usuario.schema")
 
   const obtenerTodosLosProductos = async(limit, to) => {
     const[ productos, cantidadTotal ] = await Promise.all([
@@ -72,6 +73,11 @@ const agregarImagen = async(idProducto, file) => {
   await producto.save()
 
   return 200
+}
+
+const agregarProducto = async(idUsuario, idProducto) =>{
+  const usuario = await usuarioModel.findOne({_id: idUsuario})
+  const producto = await ProductModel.findOne({_id: idProducto})
 }
 
 

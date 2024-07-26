@@ -1,5 +1,5 @@
 const express = require(`express`)
-const { obtenerUnProductoPorIdOTodos, crearProducto, editarProductoPorId, eliminarProductoPorId, agregarImagenProductoPorId, buscarProductoPorTermino,} = require("../controllers/productos.controllers")
+const { obtenerUnProductoPorIdOTodos, crearProducto, editarProductoPorId, eliminarProductoPorId, agregarImagenProductoPorId, buscarProductoPorTermino, agregarProductoAlCarrito,} = require("../controllers/productos.controllers")
 const { check } = require("express-validator")
 const auth = require("../middlewares/auth")
 const multer = require("../middlewares/multer")
@@ -16,6 +16,7 @@ router.post(`/`,[
     check(`descripcion`, `campo DESCRIPCION vacio`).not().isEmpty(),
 ], auth(`admin`), crearProducto ) 
 
+router.post(`/agregarProductoCarrito/:idProducto`, auth(`usuario`),agregarProductoAlCarrito)
 router.post(`/agregarImagen/:idProducto`, multer.single(`imagen`),agregarImagenProductoPorId)
 
 router.put(`/:idProducto`,[
@@ -24,6 +25,6 @@ router.put(`/:idProducto`,[
     check(`descripcion`, `campo DESCRIPCION vacio`).not().isEmpty()
 ], auth(`admin`), editarProductoPorId )
 
-router.delete(`/:idProducto`, auth(`admin`), eliminarProductoPorId )
+router.delete(`/:idProducto`, auth(`admin`), eliminarProductoPorId)
 
 module.exports = router

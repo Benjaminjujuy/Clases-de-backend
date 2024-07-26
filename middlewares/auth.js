@@ -15,6 +15,7 @@ module.exports = (rol) => (req, res, next) =>{
         }
 
         if(rol === verify.rol){
+            req.idUsuario = verify._id
            return next()
         }else{
             return res.status(401).json({msg: `No tenes acceso`})
