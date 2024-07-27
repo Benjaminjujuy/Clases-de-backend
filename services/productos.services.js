@@ -1,6 +1,7 @@
 const ProductModel = require(`../models/producto.schema`) 
 const cloudinary = require(`../helpers/cloudinary`)
 const usuarioModel = require("../models/usuario.schema")
+const CarritoModel = require("../models/carrito.schema")
 
   const obtenerTodosLosProductos = async(limit, to) => {
     const[ productos, cantidadTotal ] = await Promise.all([
@@ -78,6 +79,38 @@ const agregarImagen = async(idProducto, file) => {
 const agregarProducto = async(idUsuario, idProducto) =>{
   const usuario = await usuarioModel.findOne({_id: idUsuario})
   const producto = await ProductModel.findOne({_id: idProducto})
+  const carrito = await CarritoModel.findOne({_id: usuario.idCarrito})
+
+  const productoExiste = carrito.productos.find((prod) => prod._id.toString() === producto._id.toString())
+
+  if(productoExiste){
+    return{
+      msg:`Producto ya existe en el carrito`,
+      statusCode: 400
+    }
+  }
+
+  carrito.productos.push(producto)
+  await carrito.save()
+  return {
+    msg:`Producto cargado correctamente en el carrito`,
+    statusCode: 200
+  }
+}
+
+const quitarProducto = async(idUsuario, idProducto) =>{
+  const usuario = await usuarioModel.findOne({_id: idUsuario})
+  const producto = await ProductModel.findOne({_id: idProducto})
+  const carrito = await CarritoModel.findOne({_id: usuario.idCarrito})
+
+  const posicionProducto = carrito.productos.findIndex((prod) => prod._id.toString() === producto._id.toString())
+  carrito.productos.splice(posicionProducto, 1)
+
+  await carrito.save()
+  return {
+    msg:`Producto eliminado correctamente del carrito`,
+    statusCode: 200
+  }
 }
 
 
@@ -88,6 +121,8 @@ const agregarProducto = async(idUsuario, idProducto) =>{
     editarProducto,
     eliminarProducto,
     agregarImagen,
-    buscarProducto
+    buscarProducto,
+    agregarProducto,
+    quitarProducto
   }
 

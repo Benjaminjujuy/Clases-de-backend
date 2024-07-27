@@ -85,9 +85,48 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
       }
 
       const agregarProductoAlCarrito = async(req, res) => {
-        const result = await serviciosProductos.agregarProducto(req.idUsuario, req.params.idProducto)
         try {
-          res.send(`ok`)
+          const result = await servicioProductos.agregarProducto(req.idUsuario, req.params.idProducto)
+          if(result.statusCode === 200){
+            res.status(200).json({msg: result.msg})
+          }else if(result.statusCode === 400){
+            res.status(400).json({msg: result.msg})
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      const borrarProductoCarrito = async(req,res) => {
+        try {
+          const result = await servicioProductos.quitarProducto(req.idUsuario, req.params.idProducto)
+          if(result.statusCode === 200){
+            res.status(200).json({msg: result.msg})
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      const agregarProductoAlFavoritos = async(req, res) => {
+        try {
+          const result = await servicioProductos.agregarProducto(req.idUsuario, req.params.idProducto)
+          if(result.statusCode === 200){
+            res.status(200).json({msg: result.msg})
+          }else if(result.statusCode === 400){
+            res.status(400).json({msg: result.msg})
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      const borrarProductoFavoritos = async(req,res) => {
+        try {
+          const result = await servicioProductos.quitarProducto(req.idUsuario, req.params.idProducto)
+          if(result.statusCode === 200){
+            res.status(200).json({msg: result.msg})
+          }
         } catch (error) {
           console.log(error)
         }
@@ -101,4 +140,7 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
         agregarImagenProductoPorId,
         buscarProductoPorTermino,
         agregarProductoAlCarrito,
+        borrarProductoCarrito,
+        agregarProductoAlFavoritos,
+        borrarProductoFavoritos
     }
