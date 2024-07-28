@@ -2,6 +2,7 @@ const ProductModel = require(`../models/producto.schema`)
 const cloudinary = require(`../helpers/cloudinary`)
 const usuarioModel = require("../models/usuario.schema")
 const CarritoModel = require("../models/carrito.schema")
+const FavModel = require("../models/favorito.schema")
 
   const obtenerTodosLosProductos = async(limit, to) => {
     const[ productos, cantidadTotal ] = await Promise.all([
@@ -104,6 +105,14 @@ const quitarProducto = async(idUsuario, idProducto) =>{
   const carrito = await CarritoModel.findOne({_id: usuario.idCarrito})
 
   const posicionProducto = carrito.productos.findIndex((prod) => prod._id.toString() === producto._id.toString())
+
+  if(posicionProducto < 0){
+    return{
+      msg:`No se encontro el producto que estas buscando`,
+      statusCode: 400
+    }
+  }
+  
   carrito.productos.splice(posicionProducto, 1)
 
   await carrito.save()
@@ -112,6 +121,51 @@ const quitarProducto = async(idUsuario, idProducto) =>{
     statusCode: 200
   }
 }
+
+const agregarProductoFav = async(idUsuario, idProducto) =>{
+  const usuario = await usuarioModel.findOne({_id: idUsuario})
+  const producto = await ProductModel.findOne({_id: idProducto})
+  const favoritos = await FavModel.findOne({_id: usuario.idFavoritos})
+
+  const productoExiste = favoritos.productos.find((prod) => prod._id.toString() === producto._id.toString())
+
+  if(productoExiste){
+    return{
+      msg:`Producto ya existe en favoritos`,
+      statusCode: 400
+    }
+  }
+
+  favoritos.productos.push(producto)
+  await favoritos.save()
+  return {
+    msg:`Producto cargado correctamente a favoritos`,
+    statusCode: 200
+  }
+}
+
+const quitarProductoFav = async(idUsuario, idProducto) =>{
+  const usuario = await usuarioModel.findOne({_id: idUsuario})
+  const producto = await ProductModel.findOne({_id: idProducto})
+  const favoritos = await FavModel.findOne({_id: usuario.idFavoritos})
+
+  const posicionProducto = favoritos.productos.findIndex((prod) => prod._id.toString() === producto._id.toString())
+
+  if(posicionProducto < 0){
+    return{
+      msg:`No se encontro el producto que estas buscando`,
+      statusCode: 400
+    }
+  }
+
+  favoritos.productos.splice(posicionProducto, 1)
+
+  await favoritos.save()
+  return {
+    msg:`Producto eliminado correctamente de favoritos`,
+    statusCode: 200
+  }
+} 
 
 
   module.exports = {
@@ -123,6 +177,8 @@ const quitarProducto = async(idUsuario, idProducto) =>{
     agregarImagen,
     buscarProducto,
     agregarProducto,
-    quitarProducto
+    quitarProducto,
+    agregarProductoFav,
+    quitarProductoFav
   }
 

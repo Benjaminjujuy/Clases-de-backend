@@ -3,6 +3,7 @@ const { obtenerUnProductoPorIdOTodos, crearProducto, editarProductoPorId, elimin
 const { check } = require("express-validator")
 const auth = require("../middlewares/auth")
 const multer = require("../middlewares/multer")
+const { agregarProductoFav, quitarProductoFav } = require("../services/productos.services")
 const router = express.Router()
 
 
@@ -19,6 +20,10 @@ router.post(`/`,[
 
 router.post(`/agregarProductoCarrito/:idProducto`, auth(`usuario`),agregarProductoAlCarrito)
 router.post(`/quitarProductoCarrito/:idProducto`, auth(`usuario`),borrarProductoCarrito)
+
+router.post(`/agregarProductoFav/:idProducto`, auth(`usuario`),agregarProductoFav)
+router.post(`/quitarProductoFav/:idProducto`, auth(`usuario`),quitarProductoFav)
+
 router.post(`/agregarImagen/:idProducto`, multer.single(`imagen`),agregarImagenProductoPorId)
 
 router.put(`/:idProducto`,[

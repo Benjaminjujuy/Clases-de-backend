@@ -110,7 +110,7 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
 
       const agregarProductoAlFavoritos = async(req, res) => {
         try {
-          const result = await servicioProductos.agregarProducto(req.idUsuario, req.params.idProducto)
+          const result = await servicioProductos.agregarProductoFav(req.idUsuario, req.params.idProducto)
           if(result.statusCode === 200){
             res.status(200).json({msg: result.msg})
           }else if(result.statusCode === 400){
@@ -123,9 +123,11 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
 
       const borrarProductoFavoritos = async(req,res) => {
         try {
-          const result = await servicioProductos.quitarProducto(req.idUsuario, req.params.idProducto)
+          const result = await servicioProductos.quitarProductoFav(req.idUsuario, req.params.idProducto)
           if(result.statusCode === 200){
             res.status(200).json({msg: result.msg})
+          }else if(result.statusCode === 400){
+            res.status(400).json({msg: result.msg})
           }
         } catch (error) {
           console.log(error)
