@@ -167,6 +167,10 @@ const quitarProductoFav = async(idUsuario, idProducto) =>{
   }
 } 
 
+const pagoConMP = (body) => {
+    
+}
+
 
   module.exports = {
     obtenerTodosLosProductos,
@@ -179,6 +183,7 @@ const quitarProductoFav = async(idUsuario, idProducto) =>{
     agregarProducto,
     quitarProducto,
     agregarProductoFav,
-    quitarProductoFav
+    quitarProductoFav,
+    pagoConMP
   }
 

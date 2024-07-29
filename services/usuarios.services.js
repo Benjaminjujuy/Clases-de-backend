@@ -105,6 +105,8 @@ const jwt = require(`jsonwebtoken`)
     return actualizarUsuario
  }
 
+
+
  module.exports = {
     nuevoUsuario,
     inicioSesion,

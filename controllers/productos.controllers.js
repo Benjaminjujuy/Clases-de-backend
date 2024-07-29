@@ -134,6 +134,14 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
         }
       }
 
+      const mercadoPago = async(req,res) => {
+        try {
+          const result = await serviciosProductos.pagoConMP(req.body)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
     module.exports = {
         obtenerUnProductoPorIdOTodos,
         crearProducto,
@@ -144,5 +152,6 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
         agregarProductoAlCarrito,
         borrarProductoCarrito,
         agregarProductoAlFavoritos,
-        borrarProductoFavoritos
+        borrarProductoFavoritos,
+        mercadoPago
     }
