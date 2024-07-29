@@ -3,6 +3,7 @@ const cloudinary = require(`../helpers/cloudinary`)
 const usuarioModel = require("../models/usuario.schema")
 const CarritoModel = require("../models/carrito.schema")
 const FavModel = require("../models/favorito.schema")
+const { mercadoPagoConfig, Payment } = require(`mercadopago`)
 
   const obtenerTodosLosProductos = async(limit, to) => {
     const[ productos, cantidadTotal ] = await Promise.all([
@@ -167,8 +168,8 @@ const quitarProductoFav = async(idUsuario, idProducto) =>{
   }
 } 
 
-const pagoConMP = (body) => {
-    
+const pagoConMP = async (body) => {
+    const client = new mercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN})
 }
 
 
