@@ -1,21 +1,45 @@
-const nuevaCategoria = () => {
+const CategoriasModel = require("../models/categorias.schema")
 
+const nuevaCategoria = async (body) => {
+const categoria = new CategoriasModel(body)
+await categoria.save()
+return{
+    msg: `Categoria agregada`,
+    statusCode: 201
+}
 }
 
-const traerTodasLasCategorias = () => {
-
+const traerTodasLasCategorias = async () => {
+const categoria = await CategoriasModel.find()
+return {
+    categoria,
+    statusCode: 200
+}
 }
 
-const traerUnaCategoria = () => {
-
+const traerUnaCategoria = async (idCategoria) => {
+const categoria = await CategoriasModel.findById(idCategoria)
+return {
+    categoria,
+    statusCode: 200
+}
 }
 
-const actualizarUnaCategoria = () => {
-
+const actualizarUnaCategoria = async (idCategoria, body) => {
+const categoriaActualizada = await CategoriasModel.findByIdAndUpdate({_id: idCategoria}, body,{new: true})
+return{
+    msg: `Categoria agregada`,
+    categoriaActualizada,
+    statusCode: 200
+}
 }
 
-const borrarCategoria = () => {
-
+const borrarCategoria = async (idCategoria) => {
+await CategoriasModel.findByIdAndDelete({_id: idCategoria})
+return{
+    msg: `Producto borrado`,
+    statusCode: 200
+}
 }
 
 
