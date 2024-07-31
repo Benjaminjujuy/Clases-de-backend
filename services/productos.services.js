@@ -3,7 +3,7 @@ const cloudinary = require(`../helpers/cloudinary`)
 const usuarioModel = require("../models/usuario.schema")
 const CarritoModel = require("../models/carrito.schema")
 const FavModel = require("../models/favorito.schema")
-const { mercadoPagoConfig, Payment } = require(`mercadopago`)
+const { MercadoPagoConfig, Preference } = require(`mercadopago`)
 
   const obtenerTodosLosProductos = async(limit, to) => {
     const[ productos, cantidadTotal ] = await Promise.all([
@@ -169,7 +169,38 @@ const quitarProductoFav = async(idUsuario, idProducto) =>{
 } 
 
 const pagoConMP = async (body) => {
-    const client = new mercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN})
+    const client = new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN})
+    const preference = new Preference(client)
+    const result = await preference.create({
+      body: {
+        items: [
+          {
+            title:`Celular 1`,
+            quantity: 1,
+            unit_price: 200000,
+            currency_id: `ARS`
+          },
+          {
+            title:`Televisor`,
+            quantity: 1,
+            unit_price: 400000,
+            currency_id: `ARS`
+          },
+        ],
+        /*esto va en el front*/
+        back_urls: {
+          success:`myApp.netlify.com/carrito/success`,
+          failure:`myApp.netlify.com/carrito/failure`,
+          pending:`myApp.netlify.com/carrito/pending`
+        },
+        auto_return:`approved`
+      }
+    })
+
+    return{
+      result,
+      statusCode: 200
+    }
 }
 
 

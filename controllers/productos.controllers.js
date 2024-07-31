@@ -136,7 +136,8 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
 
       const mercadoPago = async(req,res) => {
         try {
-          const result = await serviciosProductos.pagoConMP(req.body)
+          const resultMp = await servicioProductos.pagoConMP(req.body)
+          
         } catch (error) {
           console.log(error)
         }
