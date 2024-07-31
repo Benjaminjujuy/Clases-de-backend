@@ -129,6 +129,7 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
           }else if(result.statusCode === 400){
             res.status(400).json({msg: result.msg})
           }
+
         } catch (error) {
           console.log(error)
         }
@@ -137,6 +138,9 @@ const obtenerUnProductoPorIdOTodos = async(req,res) => {
       const mercadoPago = async(req,res) => {
         try {
           const resultMp = await servicioProductos.pagoConMP(req.body)
+          if(resultMP.statusCode === 200){
+            res.status(200).json(resultMP.result.init_point)
+          }
           
         } catch (error) {
           console.log(error)

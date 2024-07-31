@@ -173,21 +173,7 @@ const pagoConMP = async (body) => {
     const preference = new Preference(client)
     const result = await preference.create({
       body: {
-        items: [
-          {
-            title:`Celular 1`,
-            quantity: 1,
-            unit_price: 200000,
-            currency_id: `ARS`
-          },
-          {
-            title:`Televisor`,
-            quantity: 1,
-            unit_price: 400000,
-            currency_id: `ARS`
-          },
-        ],
-        /*esto va en el front*/
+        items: body,
         back_urls: {
           success:`myApp.netlify.com/carrito/success`,
           failure:`myApp.netlify.com/carrito/failure`,
